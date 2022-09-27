@@ -1,6 +1,5 @@
 import numpy as np
 import sympy
-from sympy import solve, symbols, Eq
 
 TypeofSample=input("Is your sample strong or weak?")
 
@@ -22,21 +21,21 @@ if TypeofSample=="strong":
         print("You have reached the equivalence point, your pH is 7")
     if MolesofSample > MolesofTitrant:
         if Question1=="acid":
-                print("Congratulations! You just completed a titration. The pH of your solution is", float(-1*np.log(FinalMolarity)))
+                print("Congratulations! You just completed a titration. The pH of your solution is", round(float(-1*np.log10(FinalMolarity)), 2))
         if Question1=="base":
-                print("Congratulations! You just completed a titration. The pH of your solution is", float(14-(-1*np.log(FinalMolarity))))
+                print("Congratulations! You just completed a titration. The pH of your solution is", round(float(14-(-1*np.log10(FinalMolarity))), 2))
     if MolesofSample < MolesofTitrant:
         if Question1=="acid":
-                print("Congratulations! You just completed a titration. The pH of your solution is", float(14-(-1*np.log(FinalMolarity))))
+                print("Congratulations! You just completed a titration. The pH of your solution is", round(float(14-(-1*np.log10(FinalMolarity))), 2))
         if Question1=="base":
-                print("Congratulations! You just completed a titration. The pH of your solution is", float(-1*np.log(FinalMolarity)))
+                print("Congratulations! You just completed a titration. The pH of your solution is", round(float(-1*np.log10(FinalMolarity)), 2))
 
 
 if TypeofSample == "weak":
     Question2=input("Is your sample an acid or a base?")
     VolumeofSample=float(input("What is the volume of your sample in Liters?"))
     MolarityofSample=float(input("What is the molarity of your sample?"))
-    SampleK=float(input("What is the K value of your sample?"))
+    SampleK=float(input("What is the K value of your sample(Kb if base, Ka if acid)?"))
     VolumeofTitrant=float(input("How much Titrant are you adding in Liters?"))
     MolarityofTitrant=float(input("What is the molarity of your Titrant?"))
 
@@ -70,11 +69,20 @@ if TypeofSample == "weak":
             FinalMoles=MolesofTitrant-MolesofSample
             FinalVolume=VolumeofSample+VolumeofTitrant
             FinalMolarity=FinalMoles/FinalVolume
-            pHWhenFinished=float((-1)*np.log(FinalMolarity))
+            pHWhenFinished=float(14-(-1)*np.log10(FinalMolarity))
 
             print("Congratulations!, you went past the equivalence point and the pH of your sample is", round(pHWhenFinished, 2))
 
     if Question2 == "base":
+
+        baseconcentration=((SampleK)-np.sqrt((SampleK**2)-(4*(-1)*(MolarityofSample*SampleK))))/(-2)
+        pOH=(-1)*np.log10(baseconcentration)
+        print("The pH of your sample is originally", 14-pOH)
+
+        MolesofSample=VolumeofSample*MolarityofSample
+
+        MolesofTitrant=VolumeofTitrant*MolarityofTitrant
+
         if MolesofSample > MolesofTitrant:
             FinalMoles=MolesofSample-MolesofTitrant
             FinalVolume=VolumeofSample+VolumeofTitrant
@@ -95,7 +103,7 @@ if TypeofSample == "weak":
             FinalMoles=MolesofTitrant-MolesofSample
             FinalVolume=VolumeofSample+VolumeofTitrant
             FinalMolarity=FinalMoles/FinalVolume
-            pHWhenFinished=float((-1)*np.log(FinalMolarity))
+            pHWhenFinished=float((-1)*np.log10(FinalMolarity))
 
             print("Congratulations!, you went past the equivalence point and the pH of your sample is", round(pHWhenFinished, 2))
 
